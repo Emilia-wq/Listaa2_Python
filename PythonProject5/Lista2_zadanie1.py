@@ -1,5 +1,13 @@
+"""
+@author Emilia Romanowska
 
-#Zadanie 1
+Źródła:
+- Dokumentacja Python: https://docs.python.org/3/reference/index.html
+- Wsparcie koncepcyjne i techniczne: ChatGPT
+"""
+
+
+# Zadanie 1
 
 class Wielomian:
     """
@@ -239,62 +247,42 @@ class Wielomian:
         """Zwraca kopię listy współczynników."""
         return self._wspolczynniki.copy()
 
+if __name__ == "__main__":
+    try:
 
-    def demonstracja(self):
-
-        # Tworzenie wielomianów
-        print("1. Tworzenie wielomianów:")
-        w1 = Wielomian([1, 2, 3])  # 1 + 2x + 3x^2
-        w2 = Wielomian([4, -1, 0, 2])  # 4 - x + 2x^3
-        w3 = Wielomian([0])  # wielomian zerowy
-        w4 = Wielomian([5])  # wielomian stały
-        w5 = Wielomian([0, 1])  # x
+        w1 = Wielomian([1, 2, 3])        # 1 + 2x + 3x^2
+        w2 = Wielomian([4, -1, 0, 2])    # 4 - x + 2x^3
 
         print(f"w1 = {w1}")
         print(f"w2 = {w2}")
-        print(f"w3 = {w3}")
-        print(f"w4 = {w4}")
-        print(f"w5 = {w5}")
-
-        # Stopnie wielomianów
-        print(f"\n2. Stopnie wielomianów:")
         print(f"Stopień w1: {w1.stopien()}")
         print(f"Stopień w2: {w2.stopien()}")
-        print(f"Stopień w3: {w3.stopien()}")
 
-        # Obliczanie wartości
-        print(f"\n3. Obliczanie wartości wielomianów:")
-        x_test = 2
-        print(f"w1({x_test}) = {w1(x_test)}")
-        print(f"w2({x_test}) = {w2(x_test)}")
-        print(f"w3({x_test}) = {w3(x_test)}")
+        x = 2
+        print(f"w1({x}) = {w1(x)}")
+        print(f"w2({x}) = {w2(x)}")
 
-        # Operacje arytmetyczne
-        print(f"\n4. Operacje arytmetyczne:")
-        w_suma = w1 + w2
-        w_roznica = w1 - w2
-        w_iloczyn = w1 * w2
+        print("\nDodawanie:")
+        print(f"w1 + w2 = {w1 + w2}")
 
-        print(f"w1 + w2 = {w_suma}")
-        print(f"w1 - w2 = {w_roznica}")
-        print(f"w1 * w2 = {w_iloczyn}")
+        print("\nOdejmowanie:")
+        print(f"w1 - w2 = {w1 - w2}")
 
-        # Operatory złożone
-        print(f"\n5. Operatory złożone:")
+        print("\nMnożenie:")
+        print(f"w1 * w2 = {w1 * w2}")
+
+        print("\nOperatory złożone:")
         w_copy = Wielomian([1, 2, 3])
-        print(f"Przed += : {w_copy}")
         w_copy += w2
-        print(f"Po += w2: {w_copy}")
+        print(f"(w1 += w2): {w_copy}")
 
         w_copy = Wielomian([1, 2, 3])
-        print(f"Przed -= : {w_copy}")
         w_copy -= Wielomian([1, 1, 1])
-        print(f"Po -= [1,1,1]: {w_copy}")
+        print(f"(w1 -= [1,1,1]): {w_copy}")
 
-        w_copy = Wielomian([1, 1])  # 1 + x
-        print(f"Przed *= : {w_copy}")
-        w_copy *= Wielomian([1, 1])  # (1 + x) * (1 + x)
-        print(f"Po *= [1,1]: {w_copy}")
-        if __name__ == "__main__":
-            self.demonstracja()
+        w_copy = Wielomian([1, 1])
+        w_copy *= Wielomian([1, 1])
+        print(f"(w1 *= [1,1]): {w_copy}")
 
+    except Exception as e:
+        print("Błąd:", e)

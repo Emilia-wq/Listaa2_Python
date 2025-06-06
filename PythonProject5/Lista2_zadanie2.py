@@ -1,5 +1,13 @@
 from abc import ABC, abstractmethod
 
+"""
+@author Emilia Romanowska
+
+Źródła:
+- Dokumentacja Python: https://docs.python.org/3/reference/index.html
+- Wsparcie koncepcyjne i techniczne: ChatGPT 
+"""
+
 
 class BioSequence(ABC):
     """
@@ -201,103 +209,42 @@ class ProteinSequence(BioSequence):
     }
 
 
-def demonstracja():
-    print("=== DEMONSTRACJA KLAS SEKWENCJI BIOLOGICZNYCH ===\n")
+if __name__ == "__main__":
 
-    # 1. Tworzenie sekwencji DNA
-    print("1. Tworzenie sekwencji DNA:")
-    dna = DNASequence("gene1", "ATGCGATCGTAGC")
-    print(f"DNA: {dna}")
-    print(f"Długość: {dna.length}")
-    print()
+    # DNA
+    dna = DNASequence("gene1", "ATGCGT")
+    print("1. Sekwencja DNA:")
+    print(dna)
+    print(f"Długość: {len(dna)}")
 
-    # 2. Operacje na DNA
-    print("2. Operacje na DNA:")
+    print("\n2. Mutacja DNA na pozycji 2 (C -> A):")
+    dna.mutate(2, 'A')
+    print(dna)
 
-    # Mutacja
-    print("Przed mutacją:", dna.data)
-    dna.mutate(0, 'G')
-    print("Po mutacji (pozycja 0 -> G):", dna.data)
+    print("\n3. Komplementarna sekwencja DNA:")
+    print(dna.complement())
 
-    # Przywrócenie oryginalnej sekwencji
-    dna.mutate(0, 'A')
-
-    # Znajdowanie motywu
-    motif_pos = dna.findMotif("GCG")
-    print(f"Pozycja motywu 'GCG': {motif_pos}")
-
-    # Komplementarność
-    complement = dna.complement()
-    print(f"Komplementarna: {complement.data}")
-
-    # Transkrypcja
+    print("\n4. Transkrypcja do RNA:")
     rna = dna.transcribe()
-    print(f"RNA z transkrypcji: {rna.data}")
-    print()
+    print(rna)
 
-    # 3. Operacje na RNA
-    print("3. Operacje na RNA:")
+    # RNA
+    print("\n5. Znajdowanie motywu w RNA:")
+    pos = rna.findMotif("UG")
+    print(f"Motyw 'UG' znaleziony na pozycji: {pos}")
 
-    # Tworzenie sekwencji RNA kodującej białko
-    rna_coding = RNASequence("mRNA1", "AUGUGCGAUCGUAGC")
-    print(f"RNA kodujące: {rna_coding.data}")
+    print("\n6. Translacja RNA do białka:")
+    try:
+        protein = rna.translate()
+        print(protein)
+    except ValueError as e:
+        print("Błąd translacji:", e)
 
-    # Sprawdzenie czy można przetłumaczyć (długość musi być wielokrotnością 3)
-    if len(rna_coding.data) % 3 == 0:
-        try:
-            protein = rna_coding.translate()
-            print(f"Białko z translacji: {protein.data}")
-        except ValueError as e:
-            print(f"Błąd translacji: {e}")
-    else:
-        print("Sekwencja RNA nie ma odpowiedniej długości do translacji")
+    # Protein
+    print("\n7. Mutacja białka na pozycji 0:")
+    if len(protein.data) > 0:
+        protein.mutate(0, 'L')
+        print(protein)
 
-    # Przykład z prawidłową sekwencją
-    rna_proper = RNASequence("mRNA2", "AUGUGCGAUCGU")  # 12 nukleotydów = 4 kodony
-    protein = rna_proper.translate()
-    print(f"RNA prawidłowe: {rna_proper.data}")
-    print(f"Białko: {protein.data}")
-    print()
-
-    # 4. Operacje na białku
-    print("4. Operacje na białku:")
-
-    protein_seq = ProteinSequence("protein1", "MAIDV")
-    print(f"Białko: {protein_seq}")
-
-    # Mutacja w białku
-    print("Przed mutacją:", protein_seq.data)
-    protein_seq.mutate(1, 'L')
-    print("Po mutacji (pozycja 1 -> L):", protein_seq.data)
-
-    # Znajdowanie motywu w białku
-    motif_pos = protein_seq.findMotif("LI")
-    print(f"Pozycja motywu 'LI': {motif_pos}")
-    print()
-
-    # 5. Kompletny przepływ: DNA -> RNA -> Protein
-    print("5. Kompletny przepływ: DNA -> RNA -> Protein:")
-
-    # Sekwencja DNA kodująca krótkie białko
-    original_dna = DNASequence("complete_gene", "ATGAAATTCGGATAA")
-    print(f"DNA: {original_dna.data}")
-
-    # Transkrypcja
-    mrna = original_dna.transcribe()
-    print(f"mRNA: {mrna.data}")
-
-    # Translacja
-    final_protein = mrna.translate()
-    print(f"Białko: {final_protein.data}")
-
-    # Dekodowanie aminokwasów
-    amino_names = {
-        'M': 'Metionina', 'K': 'Lizyna', 'F': 'Fenyloalanina',
-        'G': 'Glicyna', '*': 'STOP'
-    }
-    decoded = [amino_names.get(aa, aa) for aa in final_protein.data]
-    print(f"Aminokwasy: {' - '.join(decoded)}")
-
-    if __name__ == "__main__":
-        demonstracja()
-
+    print("\n8. Znajdowanie motywu 'LA' w białku:")
+    print("Pozycja:", protein.findMotif("LA"))

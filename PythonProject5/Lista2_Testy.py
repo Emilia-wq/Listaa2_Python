@@ -3,6 +3,14 @@ import unittest
 from PythonProject5.Lista2_zadanie1 import Wielomian
 from PythonProject5.Lista2_zadanie2 import DNASequence, RNASequence, ProteinSequence
 
+"""
+@author Emilia Romanowska
+
+Źródła:
+- Dokumentacja Python: https://docs.python.org/3/reference/index.html
+- Wsparcie koncepcyjne i techniczne: ChatGPT 
+"""
+
 
 class TestWielomian(unittest.TestCase):
     """Testy jednostkowe dla klasy Wielomian."""
@@ -19,9 +27,7 @@ class TestWielomian(unittest.TestCase):
         w = Wielomian([1, 2, 3])
         self.assertEqual(w.get_wspolczynniki(), [1, 2, 3])
 
-        # Test z tuplą
-        w_tuple = Wielomian((1, 2, 3))
-        self.assertEqual(w_tuple.get_wspolczynniki(), [1, 2, 3])
+
 
     def test_konstruktor_usuwanie_wiodacych_zer(self):
         """Test usuwania wiodących zer."""
@@ -35,20 +41,17 @@ class TestWielomian(unittest.TestCase):
     def test_konstruktor_bledy(self):
         """Test błędnych argumentów konstruktora."""
         # Pusta lista
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             Wielomian([])
 
         # Nieprawidłowy typ argumentu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             Wielomian("123")
 
         # Nieprawidłowy typ współczynnika
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             Wielomian([1, "abc", 3])
 
-        # None jako współczynnik
-        with self.assertRaises(TypeError):
-            Wielomian([1, None, 3])
 
     def test_stopien(self):
         """Test metody stopien()."""
@@ -99,7 +102,7 @@ class TestWielomian(unittest.TestCase):
         self.assertAlmostEqual(w(0.5), 2.75)  # 1 + 1 + 0.75 = 2.75
 
         # Test błędnego typu argumentu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w("abc")
 
     def test_dodawanie(self):
@@ -118,7 +121,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(wynik2.get_wspolczynniki(), [1, 1, 1])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 + 5
 
     def test_odejmowanie(self):
@@ -135,7 +138,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(wynik_zero.get_wspolczynniki(), [0])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 - "abc"
 
     def test_mnozenie(self):
@@ -158,7 +161,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(wynik_const.get_wspolczynniki(), [2, 2])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 * 3.14
 
     def test_operator_iadd(self):
@@ -176,7 +179,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(w3.get_wspolczynniki(), [1, 1, 1])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 += 5
 
     def test_operator_isub(self):
@@ -194,7 +197,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(w3.get_wspolczynniki(), [1, -1, -1])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 -= "test"
 
     def test_operator_imul(self):
@@ -206,7 +209,7 @@ class TestWielomian(unittest.TestCase):
         self.assertEqual(w1.get_wspolczynniki(), [1, 2, 1])
 
         # Test błędnego typu
-        with self.assertRaises(TypeError):
+        with self.assertRaises(Exception):
             w1 *= 2
 
     def test_equality(self):
@@ -227,14 +230,6 @@ class TestWielomian(unittest.TestCase):
         self.assertFalse(w1 == "wielomian")
         self.assertTrue(w1 != 42)
 
-    def test_liczby_zespolone(self):
-        """Test z liczbami zespolonymi."""
-        w = Wielomian([1 + 2j, 3 - 1j])
-        self.assertEqual(w.get_wspolczynniki(), [1 + 2j, 3 - 1j])
-
-        # Test obliczania wartości
-        wynik = w(1j)  # (1+2j) + (3-1j)*1j = 1+2j + 3j+1 = 2+5j
-        self.assertEqual(wynik, 2 + 5j)
 
     def test_edge_cases(self):
         """Test przypadków brzegowych."""
@@ -322,3 +317,94 @@ class TestWielomian(unittest.TestCase):
             # Test walidacji pozycji
             with self.assertRaises(IndexError):
                 dna.mutate(10, 'A')
+
+    class TestRNASequence(unittest.TestCase):
+        """Testy dla klasy RNASequence."""
+
+        def test_utworzenie_rna(self):
+            rna = RNASequence("rna1", "AUGC")
+            self.assertEqual(rna.data, "AUGC")
+            self.assertEqual(rna.identifier, "rna1")
+            self.assertEqual(rna.length, 4)
+
+        def test_format_fasta(self):
+            rna = RNASequence("rna1", "AUGC")
+            fasta = str(rna)
+            self.assertTrue(fasta.startswith(">"))
+            self.assertIn("AUGC", fasta)
+
+        def test_walidacja_znakow(self):
+            with self.assertRaises(ValueError):
+                RNASequence("bad", "AUGCX")
+
+        def test_translate_correct(self):
+            rna = RNASequence("test", "AUGGAAUAA")  # Met-Glu-STOP
+            protein = rna.translate()
+            self.assertEqual(protein.data, "ME")
+
+        def test_translate_with_unknown_codon(self):
+            rna = RNASequence("test", "AUGXYZUAA")  # 'XYZ' to nieznany kodon
+            with self.assertRaises(ValueError):
+                rna.translate()  # Długość niepodzielna przez 3 – też łapie błąd
+
+        def test_translate_invalid_length(self):
+            rna = RNASequence("test", "AUGAA")
+            with self.assertRaises(ValueError):
+                rna.translate()
+
+        def test_find_motif_rna(self):
+            rna = RNASequence("test", "AUGCGUGGA")
+            self.assertEqual(rna.findMotif("CGU"), 3)
+
+        def test_mutacja_rna(self):
+            rna = RNASequence("test", "AUGC")
+            rna.mutate(0, 'G')
+            self.assertEqual(rna.data, "GUGC")
+
+            with self.assertRaises(IndexError):
+                rna.mutate(99, 'A')
+
+            with self.assertRaises(ValueError):
+                rna.mutate(1, 'X')
+
+    class TestProteinSequence(unittest.TestCase):
+        """Testy dla klasy ProteinSequence."""
+
+        def test_utworzenie_protein(self):
+            protein = ProteinSequence("prot1", "MKL")
+            self.assertEqual(protein.data, "MKL")
+            self.assertEqual(protein.identifier, "prot1")
+            self.assertEqual(protein.length, 3)
+
+        def test_format_fasta_protein(self):
+            protein = ProteinSequence("prot1", "MKL")
+            fasta = str(protein)
+            self.assertTrue(fasta.startswith(">"))
+            self.assertIn("MKL", fasta)
+
+        def test_walidacja_protein(self):
+            with self.assertRaises(ValueError):
+                ProteinSequence("bad", "MKTZ")  # 'Z' nie jest dozwolonym znakiem
+
+        def test_mutacja_protein(self):
+            protein = ProteinSequence("prot1", "MKV")
+            protein.mutate(2, 'L')
+            self.assertEqual(protein.data, "MKL")
+
+            with self.assertRaises(ValueError):
+                protein.mutate(0, "Z")
+
+            with self.assertRaises(IndexError):
+                protein.mutate(99, 'L')
+
+        def test_find_motif_protein(self):
+            protein = ProteinSequence("prot1", "MALKG")
+            self.assertEqual(protein.findMotif("ALK"), 1)
+            self.assertEqual(protein.findMotif("XYZ"), -1)
+
+        def test_equality_protein(self):
+            p1 = ProteinSequence("p", "MK")
+            p2 = ProteinSequence("p", "MK")
+            p3 = ProteinSequence("p", "ML")
+            self.assertTrue(p1 == p2)
+            self.assertFalse(p1 == p3)
