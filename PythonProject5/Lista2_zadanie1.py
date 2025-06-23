@@ -150,7 +150,7 @@ class Wielomian:
 
         return wynik
 # Metoda __add__, __sub__ itp. jako sposób przeciążania operartorów zostały zaproponowane przez ChatGPT
-    #Zastosowanie pętli z range(max_len)
+    #Zastosowanie pętli z range(max_len) - chat.gpt
     def __add__(self, other):
         """Dodawanie wielomianów."""
         if not isinstance(other, Wielomian):
