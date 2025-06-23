@@ -39,6 +39,7 @@ class Wielomian:
         # Usuwamy zera (oprócz przypadku gdy wielomian to samo zero)
         self._usun_wiodace_zera()
 
+    # pomoc z użyciem metody .pop() - chat.gpt
     def _usun_wiodace_zera(self):
         """Usuwa wiodące zera z wielomianu."""
         while len(self._wspolczynniki) > 1 and self._wspolczynniki[-1] == 0:
@@ -69,13 +70,17 @@ class Wielomian:
 
         terminy = []
 
+        
+
         # od najwyższego stopnia do najniższego
+        # Pomysł na kierunek pętli i składnię range() - chat.gpt
         for i in range(len(self._wspolczynniki) - 1, -1, -1):
             wsp = self._wspolczynniki[i]
 
             if wsp == 0:
                 continue
-
+                
+# Użycie funkcji abs() do uniknięcia podwójnych minusów - chat.gpt
             # Formatowanie współczynnika
             if i == 0:  # wyraz wolny
                 if not terminy:  # pierwszy element
@@ -144,7 +149,8 @@ class Wielomian:
             wynik += wsp * (x ** i)
 
         return wynik
-
+# Metoda __add__, __sub__ itp. jako sposób przeciążania operartorów zostały zaproponowane przez ChatGPT
+    #Zastosowanie pętli z range(max_len)
     def __add__(self, other):
         """Dodawanie wielomianów."""
         if not isinstance(other, Wielomian):
