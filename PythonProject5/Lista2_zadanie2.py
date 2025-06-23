@@ -8,7 +8,9 @@ from abc import ABC, abstractmethod
 - Wsparcie koncepcyjne i techniczne: ChatGPT 
 """
 
-
+# pomysł na użycie klasy abstrakcyjnej z VALID_CHARS = set() - chat.gpt
+# normalizacja danych (upper, replace, strip) i walidacja znaków - chat.gpt 
+# walidacja identifier i data w __init__() - chat.gpt
 class BioSequence(ABC):
     """
     Abstrakcyjna klasa bazowa dla wszystkich sekwencji biologicznych.
@@ -97,7 +99,7 @@ class BioSequence(ABC):
         if not motif:
             raise Exception("Motyw nie może być pusty")
 
-        # Walidacja znaków w motywie
+        # Walidacja znaków w motywie - chat.gpt
         invalid_chars = set(motif) - self.VALID_CHARS
         if invalid_chars:
             raise Exception(f"Nieprawidłowe znaki w motywie: {invalid_chars}")
@@ -133,6 +135,7 @@ class DNASequence(BioSequence):
         Returns:
             DNASequence: komplementarna sekwencja DNA
         """
+        #Sposób zapisu z użyciem generatora w ''.join(...) - chat.gpt
         complement_data = ''.join(self.COMPLEMENT_MAP[base] for base in self.data)
         return DNASequence(f"{self.identifier}_complement", complement_data)
 
@@ -143,6 +146,7 @@ class DNASequence(BioSequence):
         Returns:
             RNASequence: sekwencja RNA powstała z transkrypcji
         """
+        #Sposób zapisu z użyciem generatora w ''.join(...) - chat.gpt
         rna_data = ''.join(self.TRANSCRIPTION_MAP[base] for base in self.data)
         return RNASequence(f"{self.identifier}_RNA", rna_data)
 
@@ -189,7 +193,7 @@ class RNASequence(BioSequence):
             codon = self.data[i:i + 3]
             amino_acid = self.GENETIC_CODE.get(codon, 'X')  # X dla nieznanych kodonów
 
-            # Zatrzymujemy translację na kodonie stop (*)
+            # Zatrzymujemy translację na kodonie stop (*) - chat.gpt
             if amino_acid == '*':
                 break
 
