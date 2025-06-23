@@ -15,6 +15,8 @@ from PythonProject5.Lista2_zadanie2 import DNASequence, RNASequence, ProteinSequ
 class TestWielomian(unittest.TestCase):
     """Testy jednostkowe dla klasy Wielomian."""
 
+    
+# użycie metody setUp(self) - chat.gpt
     def setUp(self):
         """Przygotowanie danych testowych."""
         self.w1 = Wielomian([1, 2, 3])  # 1 + 2x + 3x^2
@@ -26,7 +28,6 @@ class TestWielomian(unittest.TestCase):
         """Test poprawnego tworzenia wielomianu."""
         w = Wielomian([1, 2, 3])
         self.assertEqual(w.get_wspolczynniki(), [1, 2, 3])
-
 
 
     def test_konstruktor_usuwanie_wiodacych_zer(self):
@@ -44,11 +45,11 @@ class TestWielomian(unittest.TestCase):
         with self.assertRaises(Exception):
             Wielomian([])
 
-        # Nieprawidłowy typ argumentu
+        # Nieprawidłowy typ argumentu - chat.gpt
         with self.assertRaises(Exception):
             Wielomian("123")
 
-        # Nieprawidłowy typ współczynnika
+        # Nieprawidłowy typ współczynnika - chat.gpt
         with self.assertRaises(Exception):
             Wielomian([1, "abc", 3])
 
@@ -90,7 +91,7 @@ class TestWielomian(unittest.TestCase):
         """Test operatora wywołania."""
         w = Wielomian([1, 2, 3])  # 1 + 2x + 3x^2
 
-        # Test dla różnych wartości x
+        # Test dla różnych wartości x = chat.gpt
         self.assertEqual(w(0), 1)  # 1 + 0 + 0 = 1
         self.assertEqual(w(1), 6)  # 1 + 2 + 3 = 6
         self.assertEqual(w(2), 17)  # 1 + 4 + 12 = 17
@@ -101,7 +102,7 @@ class TestWielomian(unittest.TestCase):
         # Test z liczbami zmiennoprzecinkowymi
         self.assertAlmostEqual(w(0.5), 2.75)  # 1 + 1 + 0.75 = 2.75
 
-        # Test błędnego typu argumentu
+        # Test błędnego typu argumentu - chat.gpt
         with self.assertRaises(Exception):
             w("abc")
 
@@ -120,7 +121,7 @@ class TestWielomian(unittest.TestCase):
         wynik2 = w3 + w4
         self.assertEqual(wynik2.get_wspolczynniki(), [1, 1, 1])
 
-        # Test błędnego typu
+        # Test błędnego typu - chat.gpt
         with self.assertRaises(Exception):
             w1 + 5
 
@@ -137,7 +138,7 @@ class TestWielomian(unittest.TestCase):
         wynik_zero = w1 - w1
         self.assertEqual(wynik_zero.get_wspolczynniki(), [0])
 
-        # Test błędnego typu
+        # Test błędnego typu - chat.gpt
         with self.assertRaises(Exception):
             w1 - "abc"
 
@@ -160,7 +161,7 @@ class TestWielomian(unittest.TestCase):
         wynik_const = w1 * w_const
         self.assertEqual(wynik_const.get_wspolczynniki(), [2, 2])
 
-        # Test błędnego typu
+        # Test błędnego typu - chat.gpt
         with self.assertRaises(Exception):
             w1 * 3.14
 
@@ -178,7 +179,7 @@ class TestWielomian(unittest.TestCase):
         w3 += w4
         self.assertEqual(w3.get_wspolczynniki(), [1, 1, 1])
 
-        # Test błędnego typu
+        # Test błędnego typu - chat.gpt
         with self.assertRaises(Exception):
             w1 += 5
 
@@ -208,7 +209,7 @@ class TestWielomian(unittest.TestCase):
         w1 *= w2  # (1 + x)^2
         self.assertEqual(w1.get_wspolczynniki(), [1, 2, 1])
 
-        # Test błędnego typu
+        # Test błędnego typu - chat.gpt
         with self.assertRaises(Exception):
             w1 *= 2
 
@@ -226,7 +227,7 @@ class TestWielomian(unittest.TestCase):
         self.assertFalse(w1 != w2)
         self.assertTrue(w1 != w3)
 
-        # Test z innym typem
+        # Test z innym typem - chat.gpt
         self.assertFalse(w1 == "wielomian")
         self.assertTrue(w1 != 42)
 
@@ -265,7 +266,7 @@ class TestWielomian(unittest.TestCase):
             self.assertEqual(dna.data, "ATGC")
             self.assertEqual(dna.length, 4)
 
-        def test_normalizacja_danych(self):
+        def test_normalizacja_danych(self): - chat.gpt
             """Test normalizacji danych wejściowych."""
             dna = DNASequence("test", "atgc  \n\t")
             self.assertEqual(dna.data, "ATGC")
@@ -274,7 +275,7 @@ class TestWielomian(unittest.TestCase):
             dna2 = DNASequence("test2", "AtGc")
             self.assertEqual(dna2.data, "ATGC")
 
-        def test_walidacja_znakow(self):
+        def test_walidacja_znakow(self): - chat.gpt
             """Test walidacji dozwolonych znaków."""
             # Prawidłowe znaki
             try:
@@ -289,7 +290,7 @@ class TestWielomian(unittest.TestCase):
             with self.assertRaises(ValueError):
                 DNASequence("test", "ATGCU")  # U zamiast T
 
-        def test_puste_sekwencje(self):
+        def test_puste_sekwencje(self): - chat.gpt
             """Test obsługi pustych sekwencji."""
             with self.assertRaises(ValueError):
                 DNASequence("test", "")
@@ -347,7 +348,7 @@ class TestWielomian(unittest.TestCase):
             with self.assertRaises(ValueError):
                 rna.translate()  # Długość niepodzielna przez 3 – też łapie błąd
 
-        def test_translate_invalid_length(self):
+        def test_translate_invalid_length(self): - chat.gpt
             rna = RNASequence("test", "AUGAA")
             with self.assertRaises(ValueError):
                 rna.translate()
@@ -382,7 +383,7 @@ class TestWielomian(unittest.TestCase):
             self.assertTrue(fasta.startswith(">"))
             self.assertIn("MKL", fasta)
 
-        def test_walidacja_protein(self):
+        def test_walidacja_protein(self): - chat.gpt
             with self.assertRaises(ValueError):
                 ProteinSequence("bad", "MKTZ")  # 'Z' nie jest dozwolonym znakiem
 
@@ -402,7 +403,7 @@ class TestWielomian(unittest.TestCase):
             self.assertEqual(protein.findMotif("ALK"), 1)
             self.assertEqual(protein.findMotif("XYZ"), -1)
 
-        def test_equality_protein(self):
+        def test_equality_protein(self): -chat.gpt
             p1 = ProteinSequence("p", "MK")
             p2 = ProteinSequence("p", "MK")
             p3 = ProteinSequence("p", "ML")
